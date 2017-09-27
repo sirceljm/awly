@@ -19,7 +19,7 @@ var marko_template = module.exports = require("marko/src/html").t(__filename),
       },
     components_helpers = require("marko/src/components/helpers"),
     marko_registerComponent = components_helpers.rc,
-    marko_componentType = marko_registerComponent("/marko-webpack$1.0.0/src/components/app-button/index.marko", function() {
+    marko_componentType = marko_registerComponent("/awly$1.0.0/src/components/app-button/index.marko", function() {
       return module.exports;
     }),
     marko_renderer = components_helpers.r,

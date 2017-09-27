@@ -2,11 +2,14 @@
 "use strict";
 
 var marko_template = module.exports = require("marko/src/html").t(__filename),
-    default_template = require("src/layouts/default"),
+    marko_loadTemplate = require("marko/src/runtime/helper-loadTemplate"),
+    default_template = marko_loadTemplate(require.resolve("src/layouts/default")),
     hasRenderBodyKey = Symbol.for("hasRenderBody"),
-    app_template = require("../../components/app"),
+    dynamodb_template = marko_loadTemplate(require.resolve("../../components/dynamodb")),
     marko_helpers = require("marko/src/runtime/html/helpers"),
     marko_loadTag = marko_helpers.t,
+    dynamodb_tag = marko_loadTag(dynamodb_template),
+    app_template = marko_loadTemplate(require.resolve("../../components/app")),
     app_tag = marko_loadTag(app_template),
     include_tag = marko_loadTag(require("marko/src/taglibs/core/include-tag"));
 
@@ -32,6 +35,8 @@ function render(input, out) {
         },
       body: {
           renderBody: function renderBody(out) {
+            dynamodb_tag({}, out);
+
             app_tag({}, out);
           }
         },
@@ -44,55 +49,8 @@ marko_template._ = render;
 marko_template.meta = {
     tags: [
       "src/layouts/default",
+      "../../components/dynamodb",
       "../../components/app",
       "marko/src/taglibs/core/include-tag"
     ]
   };
-
-
-var createOut = require('marko/src/runtime/createOut');
-
-function safeRender(renderFunc, finalData, finalOut, shouldEnd) {
-    try {
-        renderFunc(finalData, finalOut);
-
-        if (shouldEnd) {
-            finalOut.end();
-        }
-    } catch(err) {
-        var actualEnd = finalOut.end;
-        finalOut.end = function() {};
-
-        setTimeout(function() {
-            finalOut.end = actualEnd;
-            finalOut.error(err);
-        }, 0);
-    }
-    return finalOut;
-}
-
-function renderToString(template, data, callback) {
-    var localData = data || {};
-    var render = template._;
-    var globalData = localData.$global;
-
-    var out = createOut(globalData);
-
-    out.global.template = template;
-
-    if (globalData) {
-        localData.$global = undefined;
-    }
-
-    out.on('finish', function () {
-        callback(null, out.toString(), out);
-    }).once('error', function(err){
-        console.log(err);
-    });
-
-    return safeRender(render, localData, out, true);
-}
-
-renderToString(marko_template, {}, function(res, html, out) {
-    resolve(html);
-});

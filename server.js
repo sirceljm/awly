@@ -2,6 +2,9 @@ require('app-module-path').addPath(__dirname);
 require('marko/express');
 require('marko/node-require');
 
+localDynamo = require('local-dynamo');
+localDynamo.launch('./dynamodb/', 4567);
+
 var express = require('express');
 var compression = require('compression'); // Provides gzip compression for the HTTP response
 

@@ -4,7 +4,7 @@
 var marko_template = module.exports = require("marko/src/html").t(__filename),
     components_helpers = require("marko/src/components/helpers"),
     marko_registerComponent = components_helpers.rc,
-    marko_componentType = marko_registerComponent("/marko-webpack$1.0.0/src/components/app/index.marko", function() {
+    marko_componentType = marko_registerComponent("/awly$1.0.0/src/components/app/index.marko", function() {
       return module.exports;
     }),
     marko_component = require("./component"),
@@ -38,8 +38,6 @@ var marko_template = module.exports = require("marko/src/html").t(__filename),
     app_state_select_template = marko_loadTemplate(require.resolve("../app-state-select")),
     app_state_select_tag = marko_loadTag(app_state_select_template),
     marko_attr = marko_helpers.a,
-    app_fetch_data_template = marko_loadTemplate(require.resolve("../app-fetch-data")),
-    app_fetch_data_tag = marko_loadTag(app_fetch_data_template),
     app_map_template = marko_loadTemplate(require.resolve("../app-map")),
     app_map_tag = marko_loadTag(app_map_template),
     app_sections_template = marko_loadTemplate(require.resolve("../app-sections")),
@@ -474,28 +472,12 @@ function render(input, out, __component, component, state) {
             }
           },
         {
-            title: "Fetch data",
+            title: "Maps",
             renderBody: function renderBody(out) {
               var __componentId16 = __component.elId("15[]");
 
               w_preserve_tag({
                   id: __componentId16,
-                  renderBody: function renderBody(out) {
-                    marko_renderComponent(app_fetch_data_tag, {}, out, [
-                      __component,
-                      "#" + __componentId16
-                    ]);
-                  }
-                }, out);
-            }
-          },
-        {
-            title: "Maps",
-            renderBody: function renderBody(out) {
-              var __componentId18 = __component.elId("17[]");
-
-              w_preserve_tag({
-                  id: __componentId18,
                   renderBody: function renderBody(out) {
                     marko_renderComponent(app_map_tag, {
                         width: "400px",
@@ -504,7 +486,7 @@ function render(input, out, __component, component, state) {
                         lng: "-122.419416"
                       }, out, [
                       __component,
-                      "#" + __componentId18
+                      "#" + __componentId16
                     ]);
                   }
                 }, out);
@@ -547,7 +529,6 @@ marko_template.meta = {
       "../app-progress-bar",
       "../app-number-spinner",
       "../app-state-select",
-      "../app-fetch-data",
       "../app-map",
       "../app-sections"
     ]
