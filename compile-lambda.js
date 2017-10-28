@@ -21,7 +21,7 @@ lasso.configure({
 
 // returns a Compiler instance
 const compiler = webpack({
-    entry: './src/pages/home/template.marko.js',
+    entry: './src/pages/posts/template.marko.js',
     output: {
         path: path.resolve(__dirname, 'lambdas'),
         filename: 'lambda.js',
@@ -52,6 +52,9 @@ const compiler = webpack({
             // })
         }]
     },
+    externals: {
+       'aws-sdk': "require('aws-sdk')",
+    },
     plugins: [
         // required for marko server side build to work:  this should really be documented
         new webpack.DefinePlugin({
@@ -81,7 +84,7 @@ function runLasso(){
     lasso.lassoPage({
         name: 'bundle',
         dependencies: [
-            "require-run: ./src/pages/home/template.marko"
+            "require-run: ./src/pages/posts/template.marko"
         ]
     }, function(err, lassoPageResult) {
         if (err) {
