@@ -19,9 +19,11 @@ lasso.configure({
     minify: true, // Only minify JS and CSS code in production
 });
 
+const entry = "./src/pages/posts/template.marko";
+
 // returns a Compiler instance
 const compiler = webpack({
-    entry: './src/pages/posts/template.marko.js',
+    entry: entry+'.js',
     output: {
         path: path.resolve(__dirname, 'lambdas'),
         filename: 'lambda.js',
@@ -84,7 +86,7 @@ function runLasso(){
     lasso.lassoPage({
         name: 'bundle',
         dependencies: [
-            "require-run: ./src/pages/posts/template.marko"
+            "require-run: "+entry
         ]
     }, function(err, lassoPageResult) {
         if (err) {
@@ -114,9 +116,9 @@ function preparePageTemplate(){
     markoCompiler.configure({ requireTemplates: true });
     require('marko/node-require');
 
-    var compiledSrc = markoCompiler.compileFile("./src/pages/home/template.marko");
+    var compiledSrc = markoCompiler.compileFile(entry);
 
-    fs.writeFileSync("./src/pages/home/template.marko.js", compiledSrc + fs.readFileSync('./helpers/render-append.js', 'utf8'), function(err) {
+    fs.writeFileSync(entry+'.js', compiledSrc + fs.readFileSync('./helpers/render-append.js', 'utf8'), function(err) {
         if(err) {
             return console.log(err);
         }
@@ -138,6 +140,7 @@ function runWebpack(){
 
 function wrapLambda(){
     fs.writeFileSync("./lambdas/lambda.js",
+        fs.readFileSync('./helpers/bluebird-prepend.js', 'utf8') +
         fs.readFileSync('./helpers/lambda-prepend.js', 'utf8') +
         fs.readFileSync('./lambdas/lambda.js', 'utf8') +
         fs.readFileSync('./helpers/lambda-append.js', 'utf8'),

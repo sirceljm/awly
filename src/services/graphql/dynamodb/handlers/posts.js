@@ -1,18 +1,11 @@
-// const Promise = require('bluebird');
 const AWS = require('aws-sdk');
-
-AWS.config.update({
-    endpoint: "http://localhost:4567",
-    region: "us-west-2",
-    accessKeyId: "process.env.AWS_ACCESS_KEY_ID",
-    secretAccessKey: "process.env.AWS_SECRET_ACCESS_KEY"
-});
+require('dotenv').config();
 
 const dynamoConfig = {
-    endpoint: "http://localhost:4567",
-    accessKeyId: "process.env.AWS_ACCESS_KEY_ID",
-    secretAccessKey: "process.env.AWS_SECRET_ACCESS_KEY",
-    region:          "us-west-2",
+    endpoint:        process.env.DYNAMODB_ENDPONT || 'dynamodb.us-east-1.amazonaws.com',
+    accessKeyId:     process.env.AWS_ACCESS_KEY_ID, // only required for local DynamoDB
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // only required for local DynamoDB
+    region:          process.env.AWS_REGION || 'us-east-1'
 };
 
 const dynamodb = new AWS.DynamoDB(dynamoConfig);
@@ -39,11 +32,11 @@ const schema = {
     },
     TableName: "Post"
 };
-//
-dynamodb.createTable(schema, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else     console.log(data);           // successful response
-});
+
+// dynamodb.createTable(schema, function(err, data) {
+//     if (err) console.log(err, err.stack); // an error occurred
+//     else     console.log(data);           // successful response
+// });
 
 module.exports = {
     // schema: schema,

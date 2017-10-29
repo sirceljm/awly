@@ -1,8 +1,13 @@
-server {
-    var postsPromise = [];
-    var test = 'test'
+server-static {
 
-    var gql = require('src/services/graphql');
+}
+
+server {
+    console.log('SERVER');
+    var postsPromise = [];
+    var test = 'test';
+
+
     var postsPromise = new Promise((resolve, reject) => {
          gql(
              `query P{

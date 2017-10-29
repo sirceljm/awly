@@ -1,7 +1,7 @@
 .cache
 .idea
-.env
 .lambda
 event.json
 lambdas
 node_modules
+static

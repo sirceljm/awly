@@ -2,9 +2,8 @@
 
 });
 
-var zlib = require('zlib');
+    var zlib = require('zlib');
 
-exports.handler = function(event, context, callback) {
     run.then((html) => {
         const request = event.Records[0].cf.request;
 

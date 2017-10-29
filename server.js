@@ -1,4 +1,6 @@
 require('app-module-path').addPath(__dirname);
+require('dotenv').config();
+
 const Promise = require('bluebird');
 
 require('marko/express');
@@ -10,7 +12,7 @@ const bodyParser = require('body-parser');
 const graphqlExpress = require('graphql-server-express');
 
 const localDynamo = require('local-dynamo');
-localDynamo.launch(null, 4567);
+localDynamo.launch(null, process.env.DYNAMODB_PORT);
 
 var express = require('express');
 var compression = require('compression'); // Provides gzip compression for the HTTP response
