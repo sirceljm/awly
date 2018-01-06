@@ -16,6 +16,8 @@ var marko_template = module.exports = require("marko/src/html").t(__filename),
     init_components_tag = marko_loadTag(require("marko/src/components/taglib/init-components-tag")),
     await_reorderer_tag = marko_loadTag(require("marko/src/taglibs/async/await-reorderer-tag"));
 
+var marko_template = module.exports = require("marko/src/html").t(__filename);
+
 function render(input, out, __component, component, state) {
   var data = input;
 

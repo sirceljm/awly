@@ -9,7 +9,7 @@ require('marko/node-require');
 var lasso = require('lasso');
 
 const bodyParser = require('body-parser');
-const graphqlExpress = require('graphql-server-express');
+// const graphqlExpress = require('graphql-server-express');
 
 const localDynamo = require('local-dynamo');
 localDynamo.launch(null, process.env.DYNAMODB_PORT);
@@ -39,14 +39,14 @@ var port = process.env.PORT || 8080;
 // Enable gzip compression for all HTTP responses
 app.use(compression());
 
-var schema = require('./src/services/graphql/schema.js');
+// var schema = require('./src/services/graphql/schema.js');
 // console.log(schema);
 
-app.use('/graphql', bodyParser.json(), graphqlExpress.graphqlExpress({ schema: schema }));
-
-app.use('/graphiql', graphqlExpress.graphiqlExpress({
-    endpointURL: '/graphql',
-}));
+// app.use('/graphql', bodyParser.json(), graphqlExpress.graphqlExpress({ schema: schema }));
+//
+// app.use('/graphiql', graphqlExpress.graphiqlExpress({
+//     endpointURL: '/graphql',
+// }));
 
 // Allow all of the generated files under "static" to be served up by Express
 app.use(require('lasso/middleware').serveStatic());
@@ -55,7 +55,7 @@ require('src/services/routes')(app);
 
 // Map the "/" route to the home page
 //addPage('/', './src/pages/home/template.marko');
-addPage('/posts', './src/pages/posts/template.marko');
+addPage('/posts', './src/pages/posts/');
 function addPage(urlPath, filePath){
     var template = require(filePath);
 

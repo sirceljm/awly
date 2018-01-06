@@ -1,14 +1,22 @@
 const AWS = require('aws-sdk');
+const https = require('https');
+
 require('dotenv').config();
 
 const dynamoConfig = {
     endpoint:        process.env.DYNAMODB_ENDPONT || 'dynamodb.us-east-1.amazonaws.com',
     accessKeyId:     process.env.AWS_ACCESS_KEY_ID, // only required for local DynamoDB
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // only required for local DynamoDB
-    region:          process.env.AWS_REGION || 'us-east-1'
+    region:          process.env.AWS_REGION || 'us-east-1',
+    httpOptions: {
+        agent: new https.Agent({
+          rejectUnauthorized: true,
+          keepAlive: true
+        })
+      }
 };
 
-const dynamodb = new AWS.DynamoDB(dynamoConfig);
+//const dynamodb = new AWS.DynamoDB(dynamoConfig);
 const docClient = new AWS.DynamoDB.DocumentClient(dynamoConfig);
 
 const schema = {

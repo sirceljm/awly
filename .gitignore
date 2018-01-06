@@ -5,3 +5,5 @@ event.json
 lambdas
 node_modules
 static
+
+project-config/main.config.js

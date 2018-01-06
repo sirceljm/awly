@@ -1,12 +1,19 @@
-const graphql = require('graphql');
-const GraphQLObjectType = graphql.GraphQLObjectType;
-const GraphQLSchema = graphql.GraphQLSchema;
-const GraphQLList = graphql.GraphQLList;
-const GraphQLString = graphql.GraphQLString;
-const GraphQLNonNull = graphql.GraphQLNonNull;
+const GraphQLObjectType = require('graphql').GraphQLObjectType;
+const GraphQLSchema = require('graphql').GraphQLSchema;
+const GraphQLList = require('graphql').GraphQLList;
+const GraphQLString = require('graphql').GraphQLString;
+const GraphQLNonNull = require('graphql').GraphQLNonNull;
 
-const graphqlCustomTypes = require('graphql-custom-types');
-const GraphQLLimitedString = graphqlCustomTypes.GraphQLLimitedString;
+// import {
+//     GraphQLObjectType,
+//     GraphQLSchema,
+//     GraphQLList,
+//     GraphQLString,
+//     GraphQLNonNull
+// } from 'graphql/dist/modules';
+
+// const graphqlCustomTypes = require('graphql-custom-types');
+// const GraphQLLimitedString = graphqlCustomTypes.GraphQLLimitedString;
 
 const dynamoDbModel = require('./dynamodb/handlers/posts');
 const getPosts = dynamoDbModel.handlers.getPosts;
@@ -100,7 +107,7 @@ const Mutuation = new GraphQLObjectType({
             description: "Create blog post",
             args: {
                 id: {type: new GraphQLNonNull(GraphQLString)},
-                title: {type: new GraphQLLimitedString(10, 30)},
+                title: {type: new GraphQLNonNull(GraphQLString)},
                 bodyContent: {type: new GraphQLNonNull(GraphQLString)},
                 // author: {type: new GraphQLNonNull(GraphQLString), description: "Id of the author"}
             },

@@ -1,22 +1,20 @@
 server-static {
-
+    // var apollo = require("apollo-server-lambda");
+    var runGraphQL = require('src/services/graphql');
 }
 
 server {
-    console.log('SERVER');
     var postsPromise = [];
-    var test = 'test';
-
+    var test = 'PANDEMIC - On the brink - out of stock';
 
     var postsPromise = new Promise((resolve, reject) => {
-         gql(
+         runGraphQL(
              `query P{
                posts {
                  id, title, bodyContent
                }
              }`, function(err, result){
                  if(err) throw err;
-                 console.log(result.data.posts);
                  resolve(result.data.posts);
              }
          );

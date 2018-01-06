@@ -1,5 +1,7 @@
 
-
+module.exports = function(globals){
+    globals = JSON.stringify(globals);
+    return `
 var createOut = require('marko/src/runtime/createOut');
 
 function safeRender(renderFunc, finalData, finalOut, shouldEnd) {
@@ -43,6 +45,10 @@ function renderToString(template, data, callback) {
     return safeRender(render, localData, out, true);
 }
 
-renderToString(marko_template, {}, function(res, html, out) {
+renderToString(marko_template, ${globals}, function(res, html, out) {
     resolve(html);
 });
+
+}
+`;
+}

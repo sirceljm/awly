@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Awly",
   "main": "server.js",
+  "bin": {
+    "awly": "./cli.js"
+  },
   "scripts": {
+    "install": "npm-git install",
     "build": "webpack",
     "start": "npm run build && node server.js",
     "lambda": "node compile-lambda.js"
@@ -31,9 +35,11 @@
     "express": "^4.14.0",
     "express-graphql": "^0.6.11",
     "extract-text-webpack-plugin": "^2.1.2",
+    "falcor-lambda": "github:sirceljm/falcor-lambda",
+    "falcor-router-demo": "^1.0.5",
     "file-loader": "^0.11.1",
     "graphiql": "^0.11.5",
-    "graphql": "^0.11.6",
+    "graphql": "^0.11.7",
     "graphql-custom-types": "^1.1.0",
     "graphql-server-express": "^1.1.2",
     "lasso": "^2.11.16",
@@ -44,6 +50,7 @@
     "local-dynamo": "^0.5.0",
     "marked": "^0.3.6",
     "marko-loader": "^1.3.1",
+    "npm-git-install": "^0.3.0",
     "purecss": "^0.6.2",
     "raptor-pubsub": "^1.0.5",
     "raptor-util": "^3.1.0",
@@ -55,8 +62,14 @@
     "whatwg-fetch": "^2.0.2"
   },
   "devDependencies": {
+    "apollo-server-lambda": "^1.2.0",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "falcor-router": "^0.8.1",
     "marko": "github:sirceljm/marko#server-tag",
     "marko-cli": "^2.0.0",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "uglifyjs-webpack-plugin": "^1.0.1",
+    "vorpal": "^1.12.0",
+    "webpack-bundle-analyzer": "^2.9.0"
   }
 }

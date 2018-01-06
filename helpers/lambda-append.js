@@ -1,8 +1,8 @@
 
-
-});
-
     var zlib = require('zlib');
+
+exports.handler = function(event, context, callback) {
+    var run = new Promise(promiseFn);
 
     run.then((html) => {
         const request = event.Records[0].cf.request;
@@ -21,12 +21,11 @@
                 'cache-control': [{ 'key': 'Cache-Control', 'value': 'public, max-age=30' }]
             },
         };
-
         callback(null, response);
     });
 };
 
-const supportedCompression = ['gzip', 'deflate'];
+let supportedCompression = ['gzip', 'deflate'];
 
 function detectCompression(request) {
     const accept = request.headers['Accept-Encoding'] || [];
@@ -47,3 +46,5 @@ function compressBody(body, compression) {
         return body;  // no compression
     }
 }
+
+exports.handler();
