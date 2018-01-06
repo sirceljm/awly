@@ -3,17 +3,18 @@ var fs = require("fs");
 //var webpack = require("webpack");
 //var AWSUploadPlugin = require("webpack-aws-lambda-upload-plugin");
 
-module.exports = function(vorpal, options){
-    //var config = require(options.config_path);
-
+module.exports = function(vorpal, projectConfig){
     return vorpal
     	.command( "lambda-deploy [page]", "Lambda Deploy" )
         .alias("ld")
     	.action( function( args, cb ) {
-            console.log(args);
+            require("../../lib/compile-lambda")(path.join(projectConfig.cwd, 'src/pages', args.page, 'index.marko'), args.page, projectConfig);
     		// invokes command code in module providing vorpal and arguments, supporting promise as result
-    		Promise.resolve( ( this, args ) ).then( options.repl ? cb : null );
-    	} );
+    		Promise.resolve( ( this, args ) ).then( projectConfig.repl ? cb : null );
+    	} )
+        .on('error', function(err){
+            console.log(err);
+        });
 }
 
 

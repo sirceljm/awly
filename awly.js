@@ -1,14 +1,11 @@
 #! /usr/bin/env node
 const ShellJS = require("shelljs");
-const Path = require( "path" );
+const path = require( "path" );
 const Minimist = require( "minimist" );
 const Vorpal = require( "vorpal" )();
 
 var cwd = ShellJS.pwd().toString();
-var pjson = require(Path.join(cwd,'./package.json'));
-
-console.log(cwd);
-console.log(pjson.name);
+var pjson = require(path.resolve(cwd,'./package.json'));
 
 if(pjson.name !== 'awly'){
     console.log("Not an Awly directory. Exiting ...");
@@ -24,13 +21,26 @@ if ( args.h || args.help ) {
 	argv = [].concat.apply( argv.slice( 0, 2 ).concat( "help" ), argv.slice( 2 ).filter( i => i[0] !== "-" ) );
 }
 
+const projectConfig = require(path.resolve(cwd, './project-config/main.config.js'));
+projectConfig.cwd = cwd;
+try{
+    projectConfig.credentials = require(projectConfig.credentials_path);
+} catch(err){
+    if(err.code == 'MODULE_NOT_FOUND'){
+        console.log('Credentials file at ' + projectConfig.credentials_path + ' could not be found. Exiting.');
+        console.log('Please change the "credentials_path" in ' + path.resolve(cwd, './project-config/main.config.js'));
+        console.log('Exiting.');
+        return;
+    }
+}
+
 Vorpal.catch( "[words...]", "Catches incorrect commands" )
 	.action( function( args, cb ) {
 		this.log( ( args.words ? args.words.join( " " ) : "<unknown>" ) + " is not a valid command." );
 		cb();
 	} );
 
-require("./cli/lambda-deploy")(Vorpal, {repl:repl});
+require("./cli/lambda-deploy")(Vorpal, projectConfig);
 
 if ( repl ) {
 	Vorpal
