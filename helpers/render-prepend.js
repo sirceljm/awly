@@ -1,0 +1,2 @@
+
+    promiseFn = function(resolve, reject){

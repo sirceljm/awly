@@ -4,13 +4,9 @@ const path = require( "path" );
 const Minimist = require( "minimist" );
 const Vorpal = require( "vorpal" )();
 
+
 var cwd = ShellJS.pwd().toString();
 var pjson = require(path.resolve(cwd,'./package.json'));
-
-if(pjson.name !== 'awly'){
-    console.log("Not an Awly directory. Exiting ...");
-    process.exit();
-}
 
 let argv = process.argv.slice( 0 );
 
@@ -23,6 +19,8 @@ if ( args.h || args.help ) {
 
 const projectConfig = require(path.resolve(cwd, './project-config/main.config.js'));
 projectConfig.cwd = cwd;
+projectConfig.awlyCliDir = __dirname;
+
 try{
     projectConfig.credentials = require(projectConfig.credentials_path);
 } catch(err){
@@ -40,7 +38,8 @@ Vorpal.catch( "[words...]", "Catches incorrect commands" )
 		cb();
 	} );
 
-require("./cli/lambda-deploy")(Vorpal, projectConfig);
+require("./cli/init.js")(Vorpal);
+require("./cli/page/deploy.js")(Vorpal, projectConfig);
 
 if ( repl ) {
 	Vorpal
