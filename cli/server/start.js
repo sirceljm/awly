@@ -113,8 +113,7 @@ function serverStart(projectConfig, options){
 
     app.use('/assets', express.static(path.resolve(cwd, './assets')));
 
-    addPage('', path.resolve(cwd, './src/pages/home'));
-    addPage('posts', path.resolve(cwd, './src/pages/posts'));
+    addPage('/', path.resolve(cwd, './src/pages/home'));
 
     function addPage(urlPath, filePath){
         var template = require(filePath);
@@ -176,7 +175,6 @@ function serverStart(projectConfig, options){
       }, app)
       .listen(port, (error) => {
         if (error) {
-            console.log("errrr");
           console.error(error)
           return process.exit(1)
         } else {
