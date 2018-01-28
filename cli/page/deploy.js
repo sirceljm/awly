@@ -7,6 +7,17 @@ module.exports = function(vorpal, projectConfig){
         .option('--no-gzip', 'Do not compress lambda output')
         .alias("pd")
     	.action( function( args, cb ) {
+            try{
+                projectConfig.credentials = require(projectConfig.credentials_path);
+            } catch(err){
+                if(err.code == 'MODULE_NOT_FOUND'){
+                    console.log('Credentials file at ' + projectConfig.credentials_path + ' could not be found. Exiting.');
+                    console.log('Please change the "credentials_path" in ' + path.resolve(projectConfig.cwd, './project-config/main.config.js'));
+                    console.log('Exiting.');
+                    return;
+                }
+            }
+
             require("../../lib/deploy-lambda")(
                 path.join(
                     projectConfig.cwd,

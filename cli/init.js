@@ -6,7 +6,6 @@ module.exports = function(vorpal, projectConfig){
     	.command( "init [dir]", "Init Awly directory" )
         // TODO options for tags and branches
     	.action( function( args, cb ) {
-            console.log(args);
             if(!args.dir){
                 args.dir = cwd;
             }
