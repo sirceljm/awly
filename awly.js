@@ -43,6 +43,8 @@ require("./cli/server/start.js")(Vorpal, require('./lib/utils').getProjectConfig
 
 require("./cli/page/deploy.js")(Vorpal, require('./lib/utils').getProjectConfig());
 
+require("./cli/assets/upload.js")(Vorpal, require('./lib/utils').getProjectConfig());
+
 if ( repl ) {
 	Vorpal
 		.delimiter( "$" )
