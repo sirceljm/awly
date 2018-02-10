@@ -17,7 +17,7 @@ exports.handler = function(event, context, callback) {
             bodyEncoding: compression ? 'base64' : 'text',
             headers: {
                 'vary': [{ 'key': 'Vary', 'value': '*' }],
-                'content-type': [{ 'key': 'Content-Type', 'value': 'text/html; charset=UTF-8'}],
+                'content-type': [{ 'key': 'Content-Type', 'value': 'text/html; charset=UTF-8' }],
                 'content-encoding': [{ 'key': 'Content-Encoding', 'value': compression || 'identity' }],
                 'cache-control': [{ 'key': 'Cache-Control', 'value': 'public, max-age=30' }]
             },
