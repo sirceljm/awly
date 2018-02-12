@@ -30,6 +30,10 @@ let supportedCompression = ['gzip'];
 
 function detectCompression(request) {
     const accept = request.headers['accept-encoding'] || request.headers['Accept-Encoding'] || [];
+    if(accept.length === 0){
+        return null;
+    }
+
     const acceptedEncodings = accept[0].value.split(',').map(el => el.trim());
     for(var i = 0; i < acceptedEncodings.length; i++) {
         if (supportedCompression.indexOf(acceptedEncodings[i]) !== -1) {
