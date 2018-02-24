@@ -46,6 +46,8 @@ require("./cli/api/deploy.js")(Vorpal, require('./lib/utils').getProjectConfig()
 
 require("./cli/assets/upload.js")(Vorpal, require('./lib/utils').getProjectConfig());
 
+require("./cli/aws/sync-cloudfront.js")(Vorpal, require('./lib/utils').getProjectConfig());
+
 if ( repl ) {
 	Vorpal
 		.delimiter( "$" )
