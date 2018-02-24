@@ -6,8 +6,6 @@ const Vorpal = require( "vorpal" )();
 
 
 var cwd = ShellJS.pwd().toString();
-var pjson = require(path.resolve(cwd,'./package.json'));
-
 let argv = process.argv.slice( 0 );
 
 let args = Minimist( argv.slice( 2 ) );
@@ -35,7 +33,7 @@ require("./cli/aws/sync-cloudfront.js")(Vorpal, require('./lib/utils').getProjec
 
 if ( repl ) {
 	Vorpal
-		.delimiter( "$" )
+		.delimiter( "awly: " )
 		.show();
 } else {
 	Vorpal
