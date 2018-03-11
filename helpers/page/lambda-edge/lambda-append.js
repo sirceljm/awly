@@ -1,13 +1,18 @@
 
-    var zlib = require('zlib');
+    const zlib = require('zlib');
 
 exports.handler = function(event, context, callback) {
+    timer('handler');
+
     var run = new Promise(promiseFn);
 
     run.then((html) => {
         const request = event.Records[0].cf.request;
+        context.callbackWaitsForEmptyEventLoop = false;
 
         let compression = __gzip ? detectCompression(request) : null;
+
+        times.push('handler_'+timerEnd('handler'));
 
         const response = {
             status: '200',
@@ -19,10 +24,12 @@ exports.handler = function(event, context, callback) {
                 'vary': [{ 'key': 'Vary', 'value': '*' }],
                 'content-type': [{ 'key': 'Content-Type', 'value': 'text/html; charset=UTF-8' }],
                 'content-encoding': [{ 'key': 'Content-Encoding', 'value': compression || 'identity' }],
-                'cache-control': [{ 'key': 'Cache-Control', 'value': 'public, max-age=30' }]
+                'cache-control': [{ 'key': 'Cache-Control', 'value': 'public, max-age=30' }],
+                'timings': [{ 'key': 'Timings', 'value': JSON.stringify(times) }]
             },
         };
         callback(null, response);
+        times = [];
     });
 };
 
@@ -34,7 +41,14 @@ function detectCompression(request) {
         return null;
     }
 
-    const acceptedEncodings = accept[0].value.split(',').map(el => el.trim());
+    let encodings = [];
+    if(accept[0] && accept[0].value){ // Lambda@Edge - request from cloudfront
+        encodings = accept[0].value.split(',');
+    }else{ // Lambda - request from API Gateway
+        encodings = accept.split(',');
+    }
+
+    const acceptedEncodings = encodings.map(el => el.trim());
     for(var i = 0; i < acceptedEncodings.length; i++) {
         if (supportedCompression.indexOf(acceptedEncodings[i]) !== -1) {
             return acceptedEncodings[i];  // return the first match
