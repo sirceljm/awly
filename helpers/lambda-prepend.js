@@ -1,2 +1,0 @@
-
-    var promiseFn = null;

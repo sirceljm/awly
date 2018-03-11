@@ -5,6 +5,9 @@ module.exports = function(vorpal, projectConfig){
     return vorpal
     	.command( "page-deploy [page]", "Deploy page to AWS" )
         .option('--no-gzip', 'Do not compress lambda output')
+        .option('--edge', 'Deploy a lambda@edge function')
+        .option('--region', 'Deploy to a specific region - does not apply to lambda@edge')
+        .option('--lambda-name <name>', 'Provide a custom name for your lambda')
         .alias("pd")
     	.action( function( args, cb ) {
             try{
@@ -18,17 +21,32 @@ module.exports = function(vorpal, projectConfig){
                 }
             }
 
-            require("../../lib/deploy-lambda")(
-                path.join(
-                    projectConfig.cwd,
-                    'src/pages',
+            if(args.options.edge){
+                require("../../lib/deploy-lambda-edge")(
+                    path.join(
+                        projectConfig.cwd,
+                        'src/pages',
+                        args.page,
+                        'index.marko'
+                    ),
+                    projectConfig,
                     args.page,
-                    'index.marko'
-                ),
-                projectConfig,
-                args.page,
-                args.options
-            );
+                    args.options
+                );
+            }else{
+                require("../../lib/deploy-lambda")(
+                    path.join(
+                        projectConfig.cwd,
+                        'src/pages',
+                        args.page,
+                        'index.marko'
+                    ),
+                    projectConfig,
+                    args.page,
+                    args.options
+                );
+            }
+
 
     		// invokes command code in module providing vorpal and arguments, supporting promise as result
     		Promise.resolve( ( this, args ) ).then( projectConfig.repl ? cb : null );
