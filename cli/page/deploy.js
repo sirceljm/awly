@@ -8,6 +8,7 @@ module.exports = function(vorpal, projectConfig){
         .option('--edge', 'Deploy a lambda@edge function')
         .option('--region', 'Deploy to a specific region - does not apply to lambda@edge')
         .option('--lambda-name <name>', 'Provide a custom name for your lambda')
+        .option('--path <path>', 'Provide a custom path for your lambda by default it equals lambda name')
         .alias("pd")
     	.action( function( args, cb ) {
             try{
@@ -22,7 +23,7 @@ module.exports = function(vorpal, projectConfig){
             }
 
             if(args.options.edge){
-                require("../../lib/deploy-lambda-edge")(
+                require("../../lib/deploy-page-edge")(
                     path.join(
                         projectConfig.cwd,
                         'src/pages',
@@ -34,7 +35,7 @@ module.exports = function(vorpal, projectConfig){
                     args.options
                 );
             }else{
-                require("../../lib/deploy-lambda")(
+                require("../../lib/deploy-page")(
                     path.join(
                         projectConfig.cwd,
                         'src/pages',
@@ -46,7 +47,6 @@ module.exports = function(vorpal, projectConfig){
                     args.options
                 );
             }
-
 
     		// invokes command code in module providing vorpal and arguments, supporting promise as result
     		Promise.resolve( ( this, args ) ).then( projectConfig.repl ? cb : null );
