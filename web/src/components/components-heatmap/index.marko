@@ -1,0 +1,92 @@
+class {
+    collapseAll() {
+      console.log('collapseAll');
+    }
+
+    expandAll() {
+      console.log('expandAll');
+    }
+}
+
+<div>
+  <div.toolbar>
+    <if(data.childConnections)>
+      <h2.noBotMargin>Parent -> Child connections</h2>
+    </if>
+    <if(data.parentConnections)>
+      <h2.noBotMargin>Child -> Parent connections</h2>
+    </if>
+    <!-- <div.filterByName>
+      <input />
+    </div>
+    <div.collapseAll>
+      <button onClick("collapseAll")>Collapse all</button>
+    </div>
+    <div.expandAll>
+      <button onClick("expandAll")>Expand all</button>
+    </div>
+    <div.toggleIcon.hidePages>
+      <svg.iconToolbar.iconPage inline-svg="/assets/icons/file-empty.svg" />
+    </div>
+    <div.toggleIcon.hideLayouts>
+      <svg.iconToolbar.iconLayout inline-svg="/assets/icons/insert-template.svg" />
+    </div>
+    <div.toggleIcon.hidedComponents>
+      <svg.iconToolbar.iconComponent inline-svg="/assets/icons/embed2.svg" />
+    </div> -->
+  </div>
+
+  <div>
+    <if(data.childConnections)>
+      <components-heatmap-tree
+        direction="children"
+        nextComponents=data.childConnections
+        structure=data.childConnections>
+      </components-heatmap-tree>
+    </if>
+    <if(data.parentConnections)>
+      <components-heatmap-tree
+        direction="parents"
+        nextComponents=data.parentConnections
+        structure=data.parentConnections>
+      </components-heatmap-tree>
+    </if>
+  </div>
+</div>
+
+style.scss {
+
+  .toolbar {
+    display: flex;
+    padding-bottom: 5px;
+    border-bottom: 1px solid grey;
+    margin-bottom: 5px;
+    align-items: center;
+
+    .toggleIcon {
+      font-size: 0;
+    }
+
+    .iconToolbar {
+      height: 30px;
+      width: 22px;
+      margin: 0px 4px;
+    }
+
+    .iconPage {
+      fill: #ffc400;
+    }
+
+    .iconLayout {
+      fill: #7d0;
+    }
+
+    .iconComponent {
+      fill: #09d;
+    }
+
+    .noBotMargin{
+      margin-bottom: 0px;
+    }
+  }
+}
