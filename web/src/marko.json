@@ -1,0 +1,26 @@
+{
+    "<script>": {
+        "transformer": "./hooks/inline-js-transformer.js"
+    },
+    "<style>": {
+        "transformer": "./hooks/inline-css-transformer.js"
+    },
+    "<svg>": {
+        "transformer": "./hooks/inline-svg-transformer.js"
+    },
+    "<app-base64>": {
+        "renderer": "./hooks/base64-tag.js",
+        "@path": "string",
+        "@var": "var",
+        "var": {
+            "name-from-attribute": "var"
+        }
+    },
+    "<img>": {
+        "transformer": "./hooks/img-transformer.js"
+    },
+    "<*>": {
+        "@repeat": "integer",
+        "transformer": "./hooks/repeat-transformer.js"
+    }
+}

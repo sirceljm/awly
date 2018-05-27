@@ -1,0 +1,55 @@
+<include("web/src/layouts/default")>
+    <@title>
+        Awly.io 🚀 Mission Control
+    </@title>
+    <@nav>
+        <div.navigation>
+          Awly.io 🚀 Mission Control
+        </div>
+    </@nav>
+    <@body>
+        <h1>COMPONENT FAMILY TREE</h1>
+
+        <!-- <pre>${JSON.stringify(out.global.data.childConnections, undefined, 4)}</pre> -->
+
+        <div.split>
+          <div.l><components-heatmap childConnections=out.global.data.childConnections></components-heatmap></div>
+          <div.r><components-heatmap parentConnections=out.global.data.parentConnections></components-heatmap></div>
+        </div>
+        <div.space></div>
+    </@body>
+    <@footer>
+        <div></div>
+    </@footer>
+</include>
+
+style.scss {
+
+  .l {
+    width: 50%;
+    padding-right: 20px;
+    border-right: 1px solid #ddd;
+  }
+
+  .r {
+    width: 50%;
+    padding-left: 20px;
+  }
+
+  .navigation {
+    display: flex;
+    color: white;
+    font-size: 24px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .split{
+    display: flex;
+  }
+
+  .space {
+    margin-bottom: 60px;
+  }
+}

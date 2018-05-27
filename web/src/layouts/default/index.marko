@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><include(data.title)/></title>
+
+    <link rel="stylesheet" href="/__awly/awly-assets/css/normalize.css" />
+    <link rel="stylesheet" href="/__awly/awly-assets/css/system-fonts.css" />
+
+    $!{out.global.injectCSS}
+</head>
+<body.grid-layout>
+    <div.header-bg></div>
+
+    <div.nav><include(data.nav)/></div>
+    <div.body><include(data.body)/></div>
+    <div.footer><include(data.footer)/></div>
+
+    $!{out.global.injectJS}
+
+    <!-- todo dont hotreload but make a notification "changes to your project have been made - refresh" -->
+    <!-- <script>
+        var poll = function () {
+            var oReq = new XMLHttpRequest();
+            oReq.timeout = 30000; // time in milliseconds
+
+            oReq.onload = function (data) {
+                location.reload();
+                poll();
+            };
+
+            oReq.ontimeout = function (e) {
+                poll();
+            };
+
+            oReq.open("GET", "https://localhost:8443/__hotReload");
+            oReq.send();
+        };
+
+        // Make sure to call it once first,
+        poll();
+    </script> -->
+</body>
+</html>
+
+style.scss {
+    .nowrap {
+        white-space: nowrap;
+    }
+
+    .grid-layout {
+        display: grid;
+        min-height: 100vh;
+        grid-template-columns: 1fr 4fr 4fr 1fr;
+        grid-template-rows: 60px auto auto;
+        grid-template-areas:
+            ". nav nav ."
+            ". body body ."
+            ". footer footer .";
+    }
+
+    .header-bg {
+        grid-area: nav-start / 1 / nav-end / end;
+        background-image: -webkit-linear-gradient(#80059E 0%, #550486 100%);
+        margin-bottom: 3px;
+        box-shadow: 0px 2px 1px black;
+    }
+
+    .footer-bg {
+        grid-area: footer-start / 1 / footer-end / end;
+        background-image: -webkit-linear-gradient(#80059E 0%, #550486 100%);
+    }
+
+    .nav {
+        grid-area: nav;
+    }
+
+    .body {
+        grid-area: body;
+    }
+
+    .footer {
+        grid-area: footer;
+    }
+}

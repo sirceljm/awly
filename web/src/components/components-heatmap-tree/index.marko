@@ -1,0 +1,104 @@
+static {
+  let exportsJSON;
+
+  function importExports(component){
+      return component.getEl().dataset.exports;
+  }
+
+  let state = {
+
+  }
+}
+
+server {
+    state.direction = input.direction; // TODO assert
+    component.components = input.nextComponents;
+    state.structure = input.structure;
+
+    // console.log(component.components);
+    // console.log(Object.keys(component.components));
+    // console.log(Object.keys({}).sort());
+    // console.log("---------------------------------------------");
+    // exportsJSON = JSON.stringify(state);
+}
+
+server-static {
+  // console.log(data);
+}
+
+class {
+
+  onCreate() {
+    this.state = state;
+    // console.log(this.state);
+    //
+  }
+
+  onMount() {
+    console.log('awly-mounted');
+  }
+}
+
+<div class="pad" for(nextComponentPath in Object.keys(component.components).sort())>
+    <div.flex>
+      <if(component.components[nextComponentPath].type == 'page')>
+        <svg.rowIcon.iconPage inline-svg="/assets/icons/file-empty.svg" />
+      </if>
+      <if(component.components[nextComponentPath].type == 'layout')>
+        <svg.rowIcon.iconLayout inline-svg="/assets/icons/insert-template.svg" />
+      </if>
+      <if(component.components[nextComponentPath].type == 'component')>
+        <svg.rowIcon.iconComponent inline-svg="/assets/icons/embed2.svg" />
+      </if>
+
+      <!-- <div>|${JSON.stringify(component.components[nextComponentPath])}|</div> -->
+      <div>${nextComponentPath}</div>
+      <if(state.structure[nextComponentPath] && state.structure[nextComponentPath].next)>
+        <div.childrenDesc>${Object.keys(state.structure[nextComponentPath].next).length} ${state.direction}</div>
+      </if>
+    </div>
+    <if(state.structure[nextComponentPath] && Object.keys(state.structure[nextComponentPath].next).length > 0)>
+        <components-heatmap-tree
+          direction=state.direction
+          nextComponents=state.structure[nextComponentPath].next
+          structure=state.structure>
+        </components-heatmap-tree>
+    </if>
+</div>
+
+style.scss {
+  .rowIcon {
+    height: 22px;
+    width: 22px;
+    margin-right: 5px;
+  }
+
+  .iconPage {
+    fill: #ffc400;
+  }
+
+  .iconLayout {
+    fill: #7d0;
+  }
+
+  .iconComponent {
+    fill: #09d;
+  }
+
+  .pad {
+    margin-left: 20px;
+  }
+
+  .childrenDesc {
+    font-size: 12px;
+    color: grey;
+    margin-left: 5px;
+  }
+
+  .flex {
+    display: flex;
+    font-size: 16px;
+    line-height: 32px;
+    align-items: center;
+  }
+}
