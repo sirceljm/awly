@@ -1,8 +1,8 @@
 
-const zlib = require('zlib');
+const zlib = require("zlib");
 
 exports.handler = function(event, context, callback) {
-    timer('handler');
+    timer("handler");
     var wait = new Promise(function(resolve, reject){ // wait for event.Records // TODO figure out what is really going on
         resolve();
     });
@@ -30,7 +30,7 @@ exports.handler = function(event, context, callback) {
         run.then((result) => {
             let compression = __gzip ? detectCompression(request) : null;
 
-            times.push('handler_'+timerEnd('handler'));
+            times.push("handler_"+timerEnd("handler"));
 
             // let response = {
             //     statusCode: 200,
@@ -41,17 +41,17 @@ exports.handler = function(event, context, callback) {
             // }
 
             let response = {
-                status: '200',
-                statusDescription: 'HTTP OK',
+                status: "200",
+                statusDescription: "HTTP OK",
                 httpVersion: request.httpVersion,
                 body: compressBody(JSON.stringify(result), compression),
-                bodyEncoding: compression ? 'base64' : 'text',
+                bodyEncoding: compression ? "base64" : "text",
                 headers: {
-                    'vary': [{ 'key': 'Vary', 'value': '*' }],
-                    'content-type': [{ 'key': 'Content-Type', 'value': 'application/json; charset=UTF-8' }],
-                    'content-encoding': [{ 'key': 'Content-Encoding', 'value': compression || 'identity' }],
-                    'cache-control': [{ 'key': 'Cache-Control', 'value': 'public' }],
-                    'timings': [{ 'key': 'Timings', 'value': JSON.stringify(times) }]
+                    "vary": [{ "key": "Vary", "value": "*" }],
+                    "content-type": [{ "key": "Content-Type", "value": "application/json; charset=UTF-8" }],
+                    "content-encoding": [{ "key": "Content-Encoding", "value": compression || "identity" }],
+                    "cache-control": [{ "key": "Cache-Control", "value": "public" }],
+                    "timings": [{ "key": "Timings", "value": JSON.stringify(times) }]
                 },
             };
 
@@ -61,19 +61,19 @@ exports.handler = function(event, context, callback) {
     });
 };
 
-let supportedCompression = ['gzip'];
+let supportedCompression = ["gzip"];
 
 function detectCompression(request) {
-    const accept = request.headers['accept-encoding'] || request.headers['Accept-Encoding'] || [];
+    const accept = request.headers["accept-encoding"] || request.headers["Accept-Encoding"] || [];
     if(accept.length === 0){
         return null;
     }
 
     let encodings = [];
     if(accept[0] && accept[0].value){ // Lambda@Edge - request from cloudfront
-        encodings = accept[0].value.split(',');
+        encodings = accept[0].value.split(",");
     }else{ // Lambda - request from API Gateway
-        encodings = accept.split(',');
+        encodings = accept.split(",");
     }
 
     const acceptedEncodings = encodings.map(el => el.trim());
@@ -86,8 +86,8 @@ function detectCompression(request) {
 }
 
 function compressBody(body, compression) {
-    if (compression === 'gzip') {
-        return zlib.gzipSync(body).toString('base64');
+    if (compression === "gzip") {
+        return zlib.gzipSync(body).toString("base64");
     } else {
         return body;  // no compression
     }

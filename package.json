@@ -36,7 +36,7 @@
     "deasync": "^0.1.13",
     "dotenv": "^4.0.0",
     "download-git-repo": "^1.0.1",
-    "express-longpoll": "0.0.4",
+    "express-longpoll": "sirceljm/express-longpoll",
     "express-promise-router": "^3.0.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "graphql": "^0.13.2",
@@ -65,5 +65,8 @@
     "webpack": "^3.12.0",
     "webpack-bundle-analyzer": "^2.13.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0"
+  }
 }

@@ -1,16 +1,16 @@
-const fs = require('fs');
-const path = require('path');
-require('./node_modules/marko/node-require').install();
+const fs = require("fs");
+const path = require("path");
+require("./node_modules/marko/node-require").install();
 
 module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pageHasChanges){
-    const router = require('express-promise-router')();
+    const router = require("express-promise-router")();
 
     router.use((req, res, next) => {
         return new Promise((resolve, reject) => {
             renderPage(urlPath, localEndpoint, cwd, router, lasso, pageHasChanges)
                 .then((lassoResponse) => {
-                    router.get('/', function(req, res) {
-                        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+                    router.get("/", function(req, res) {
+                        res.setHeader("Content-Type", "text/html; charset=utf-8");
                         res.marko(lassoResponse.template, {
                             $global:{
                                 injectCSS: lassoResponse.css,
@@ -19,31 +19,31 @@ module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pa
                         });
                     });
 
-                    resolve('next');
+                    resolve("next");
                 });
         });
-    })
+    });
 
     return router(req, res, next);
 };
 
 function renderPage(urlPath, filePath, cwd, router, lasso, rebuildPage){
     return new Promise((resolve, reject) => {
-        console.log("RELOAD PAGE:", urlPath, "->", filePath, !rebuildPage ? ' (from cache)' : '');
+        console.log("RELOAD PAGE:", urlPath, "->", filePath, !rebuildPage ? " (from cache)" : "");
 
         if(rebuildPage){
-            delete require.cache[path.resolve(cwd, filePath, 'index.marko')];
-            delete require.cache[path.resolve(cwd, filePath, 'index.marko.js')];
+            delete require.cache[path.resolve(cwd, filePath, "index.marko")];
+            delete require.cache[path.resolve(cwd, filePath, "index.marko.js")];
         }
 
-        var template = require(path.resolve(cwd, filePath, 'index.marko'));
+        var template = require(path.resolve(cwd, filePath, "index.marko"));
 
         let lassoPageOptions = {
-            name: (urlPath !== '/' ? urlPath : 'index'),
+            name: (urlPath !== "/" ? urlPath : "index"),
             dependencies: [
                 "require-run: " + filePath,
             ]
-        }
+        };
 
         // this makes lasso rebuild if there are updates to the page
         if(rebuildPage){
@@ -52,12 +52,14 @@ function renderPage(urlPath, filePath, cwd, router, lasso, rebuildPage){
 
         lasso.lassoPage(lassoPageOptions).then(function(lassoPageResult) {
             let js = lassoPageResult.getBodyHtml();
+            let cssFile = lassoPageResult.getHeadHtml();
+
             // TODO make user choose
             let css = "<style>";
 
             lassoPageResult.files.forEach((file) => {
-                if(file.contentType == 'css'){
-                    css += fs.readFileSync(file.path, 'utf8');
+                if(file.contentType == "css"){
+                    css += fs.readFileSync(file.path, "utf8");
                 }
             });
 
@@ -67,7 +69,7 @@ function renderPage(urlPath, filePath, cwd, router, lasso, rebuildPage){
             resolve({
                 template: template,
                 js: js,
-                css: css
+                css: cssFile
             });
         });
     });
