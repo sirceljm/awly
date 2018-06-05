@@ -3,12 +3,12 @@ var fs = require("fs");
 
 module.exports = function(vorpal, version){
     return vorpal
-    	.command( "version", "awly-cli version" )
+        .command( "version", "awly-cli version" )
         .alias("-v")
-    	.action( function( args, cb ) {
+        .action( function( args, cb ) {
             console.log(version);
-    	} )
-        .on('error', function(err){
+        })
+        .on("error", function(err){
             console.log(err);
         });
-}
+};
