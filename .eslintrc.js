@@ -24,9 +24,9 @@ module.exports = {
             "always"
         ],
 
-        "no-console": 1,
-        "no-unused-vars": 1,
-        "curly": [2, "all"],
-        "brace-style": [2, "1tbs"]
+        "no-console": "off",
+        "no-unused-vars": ["warn", { "args": "none" }],
+        "curly": ["error", "all"],
+        "brace-style": ["error", "1tbs"]
     }
 };

@@ -1,5 +1,4 @@
 var path = require("path");
-var fs = require("fs");
 
 module.exports = function(vorpal, projectConfig){
     return vorpal

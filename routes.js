@@ -52,7 +52,7 @@ function renderPage(urlPath, filePath, cwd, router, lasso, rebuildPage){
 
         lasso.lassoPage(lassoPageOptions).then(function(lassoPageResult) {
             let js = lassoPageResult.getBodyHtml();
-            let cssFile = lassoPageResult.getHeadHtml();
+            // let cssFile = lassoPageResult.getHeadHtml();
 
             // TODO make user choose
             let css = "<style>";
@@ -69,7 +69,7 @@ function renderPage(urlPath, filePath, cwd, router, lasso, rebuildPage){
             resolve({
                 template: template,
                 js: js,
-                css: cssFile
+                css: css
             });
         });
     });

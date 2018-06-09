@@ -1,6 +1,3 @@
-var path = require("path");
-var fs = require("fs");
-
 module.exports = function(vorpal, cwd){
     return vorpal
         .command( "init [dir]", "Init Awly directory" )
