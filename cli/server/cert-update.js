@@ -1,13 +1,8 @@
 module.exports = function(vorpal, projectConfig){
     return vorpal
-        .command("server start", "Start local server" )
-        .alias("serve")
-        .option("--lambda", "Build all Lambda functions and simulate AWS Lambda environment")
-        .option("--hot-reload", "Run with hot reload")
-        .option("--port", "Custom server port")
-        .option("--prod", "--production", "Run production server (not applicable if --lambda flag is present)")
+        .command("server cert-update", "Update localhost self-signed certificate" )
         .action(( args, cb ) => {
-            require("../../lib/server-start")(
+            require("../../lib/update-cert")(
                 projectConfig,
                 args.options
             );

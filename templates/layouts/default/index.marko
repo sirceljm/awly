@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><include(data.title)/></title>
+
+    <style inline-css="/assets/css/normalize.css"></style>
+    <style inline-css="/assets/css/system-fonts.css"></style>
+
+    $!{out.global.injectCSS}
+</head>
+<body>
+    <div><include(data.body)/></div>
+
+    $!{out.global.injectJS}
+
+    <script>
+        var poll = function () {
+            var oReq = new XMLHttpRequest();
+            oReq.timeout = 60000; // time in milliseconds
+
+            oReq.onload = function (data) {
+                location.reload();
+                poll();
+            };
+
+            oReq.ontimeout = function (e) {
+                poll();
+            };
+
+            oReq.open("GET", "https://localhost:8443/__hotReload");
+            oReq.send();
+        };
+        poll();
+    </script>
+</body>
+</html>
+
+style.scss {
+
+}

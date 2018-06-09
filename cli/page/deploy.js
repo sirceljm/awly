@@ -1,9 +1,8 @@
 var path = require("path");
-var fs = require("fs");
 
 module.exports = function(vorpal, projectConfig){
     return vorpal
-        .command("page-deploy [page]", "Deploy page to AWS" )
+        .command("page-deploy <page>", "Deploy page to AWS" )
         .option("--no-gzip", "Do not compress lambda output")
         .option("--edge", "Deploy a lambda@edge function")
         .option("--region", "Deploy to a specific region - does not apply to lambda@edge")
@@ -24,7 +23,7 @@ module.exports = function(vorpal, projectConfig){
 
             if(args.options.edge){
                 require("../../lib/deploy-page-edge")(
-                    path.join(
+                    path.join( // TODO put this in lib file only pass args.page
                         projectConfig.cwd,
                         "src/pages",
                         args.page,

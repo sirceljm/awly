@@ -37,15 +37,20 @@ require("./cli/version.js")(Vorpal, awlyCliConfig.version);
 // require("./cli/info.js")(Vorpal, awlyCliConfig);
 require("./cli/init.js")(Vorpal);
 
+const projectConfig = require("./lib/utils").getProjectConfig();
+
 if(insideAwlyDir()){
-    require("./cli/server/start.js")(Vorpal, require("./lib/utils").getProjectConfig());
+    require("./cli/server/start.js")(Vorpal, projectConfig);
+    require("./cli/server/cert-update.js")(Vorpal, projectConfig);
 
-    require("./cli/page/deploy.js")(Vorpal, require("./lib/utils").getProjectConfig());
-    require("./cli/api/deploy.js")(Vorpal, require("./lib/utils").getProjectConfig());
+    require("./cli/page/create.js")(Vorpal, projectConfig);
 
-    require("./cli/assets/upload.js")(Vorpal, require("./lib/utils").getProjectConfig());
+    require("./cli/page/deploy.js")(Vorpal, projectConfig);
+    require("./cli/api/deploy.js")(Vorpal, projectConfig);
 
-    require("./cli/aws/sync-cloudfront.js")(Vorpal, require("./lib/utils").getProjectConfig());
+    require("./cli/assets/upload.js")(Vorpal, projectConfig);
+
+    require("./cli/aws/sync-cloudfront.js")(Vorpal, projectConfig);
 }
 
 // Vorpal

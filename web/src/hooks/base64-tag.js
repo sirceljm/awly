@@ -1,5 +1,5 @@
-var fs = require('fs');
-var mime = require('mime');
+var fs = require("fs");
+var mime = require("mime");
 
 var cache = {};
 
@@ -19,7 +19,7 @@ module.exports = function(input, out) {
             return;
         }
 
-        dataUrl = cache[imagePath] = 'data:' + mime.lookup(imagePath) + ';' + 'base64' + ',' + data.toString('base64');
+        dataUrl = cache[imagePath] = "data:" + mime.lookup(imagePath) + ";" + "base64" + "," + data.toString("base64");
         input.renderBody(asyncOut, dataUrl);
         asyncOut.end();
     });

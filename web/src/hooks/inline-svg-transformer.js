@@ -1,113 +1,110 @@
-'use strict';
+"use strict";
 
-const mime = require('mime');
-const fs = require('fs');
-const path = require('path');
-const SVGO = require('svgo');
+const fs = require("fs");
+const path = require("path");
+const SVGO = require("svgo");
 const deasync = require("deasync");
 
 function svgoOptimizeSync(svgo, content) {
-  let res;
-  svgo.optimize(content).then(result => res = result);
-  deasync.loopWhile(() => !res);
-  return res;
+    let res;
+    svgo.optimize(content).then(result => res = result);
+    deasync.loopWhile(() => !res);
+    return res;
 }
 
 module.exports = function transform(el, context) {
-    let inlineSVGExpression = el.getAttributeValue('inline-svg');
-    let svgClasses = el.getAttributeValue('class') || {};
+    let inlineSVGExpression = el.getAttributeValue("inline-svg");
+    let svgClasses = el.getAttributeValue("class") || {};
 
     const svgo = new SVGO({
         plugins: [{
-          cleanupAttrs: true,
+            cleanupAttrs: true,
         }, {
-          removeDoctype: true,
+            removeDoctype: true,
         },{
-          removeXMLProcInst: true,
+            removeXMLProcInst: true,
         },{
-          removeComments: true,
+            removeComments: true,
         },{
-          removeMetadata: true,
+            removeMetadata: true,
         },{
-          removeTitle: true,
+            removeTitle: true,
         },{
-          removeDesc: true,
+            removeDesc: true,
         },{
-          removeUselessDefs: true,
+            removeUselessDefs: true,
         },{
-          removeEditorsNSData: true,
+            removeEditorsNSData: true,
         },{
-          removeEmptyAttrs: true,
+            removeEmptyAttrs: true,
         },{
-          removeHiddenElems: true,
+            removeHiddenElems: true,
         },{
-          removeEmptyText: true,
+            removeEmptyText: true,
         },{
-          removeEmptyContainers: true,
+            removeEmptyContainers: true,
         },{
-          removeViewBox: false,
+            removeViewBox: false,
         },{
-          cleanUpEnableBackground: true,
+            cleanUpEnableBackground: true,
         },{
-          convertStyleToAttrs: true,
+            convertStyleToAttrs: true,
         },{
-          convertColors: true,
+            convertColors: true,
         },{
-          convertPathData: true,
+            convertPathData: true,
         },{
-          convertTransform: true,
+            convertTransform: true,
         },{
-          removeUnknownsAndDefaults: true,
+            removeUnknownsAndDefaults: true,
         },{
-          removeNonInheritableGroupAttrs: true,
+            removeNonInheritableGroupAttrs: true,
         },{
-          removeUselessStrokeAndFill: true,
+            removeUselessStrokeAndFill: true,
         },{
-          removeUnusedNS: true,
+            removeUnusedNS: true,
         },{
-          cleanupIDs: true,
+            cleanupIDs: true,
         },{
-          cleanupNumericValues: true,
+            cleanupNumericValues: true,
         },{
-          moveElemsAttrsToGroup: true,
+            moveElemsAttrsToGroup: true,
         },{
-          moveGroupAttrsToElems: true,
+            moveGroupAttrsToElems: true,
         },{
-          collapseGroups: true,
+            collapseGroups: true,
         },{
-          removeRasterImages: false,
+            removeRasterImages: false,
         },{
-          mergePaths: true,
+            mergePaths: true,
         },{
-          convertShapeToPath: true,
+            convertShapeToPath: true,
         },{
-          sortAttrs: false,
+            sortAttrs: false,
         },{
-          transformsWithOnePath: false,
+            transformsWithOnePath: false,
         },{
-          removeDimensions: true,
+            removeDimensions: true,
         },{
-          removeAttrs: {attrs: '(stroke|fill)'},
+            removeAttrs: {attrs: "(stroke|fill)"},
         },{
-          addClassesToSVGElement: {
+            addClassesToSVGElement: {
                 classNames: [svgClasses.value] // TODO warning if class is missing
-          }
+            }
         }]
-      });
+    });
 
     if (!inlineSVGExpression) {
         return;
     }
 
-    let builder = context.builder;
+    el.removeAttribute("inline-svg"); // This attribute is handled at compile time. We can just remove it now
 
-    el.removeAttribute('inline-svg'); // This attribute is handled at compile time. We can just remove it now
-
-    if (inlineSVGExpression.type === 'Literal') {
+    if (inlineSVGExpression.type === "Literal") {
         let svgPath = "";
 
         if(path.isAbsolute(inlineSVGExpression.value)){
-            const appDir = path.resolve(__dirname, '../..');
+            const appDir = path.resolve(__dirname, "../..");
             svgPath = path.normalize(appDir + inlineSVGExpression.value);
         }else{
             const templateDir = context.dirname;
