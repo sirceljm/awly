@@ -33,6 +33,7 @@
     "chokidar": "^2.0.3",
     "co": "^4.6.0",
     "compression": "^1.7.2",
+    "cookie-parser": "^1.4.3",
     "deasync": "^0.1.13",
     "dotenv": "^4.0.0",
     "download-git-repo": "^1.0.1",
