@@ -1,4 +1,3 @@
-const fs = require("fs");
 const path = require("path");
 require("./node_modules/marko/node-require").install();
 
@@ -7,9 +6,14 @@ module.exports = function(req, res, next, cwd, urlPath, localEndpoint, pageHasCh
 
     router.use((req, res, next) => {
         return new Promise((resolve, reject) => {
-            require(path.resolve(cwd, "src", localEndpoint))(req, res);
+            require(path.resolve(cwd, "src", localEndpoint))(req, res).then((response) => {
+                for(let header in response.headers){
+                    res.header(header, response.headers[header]);
+                }
 
-            resolve("next");
+                res.send(response.body);
+                resolve("next");
+            });
         });
     });
 
