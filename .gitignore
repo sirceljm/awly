@@ -57,5 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 
+lambdas
 static
+
 *.marko.js

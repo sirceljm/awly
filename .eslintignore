@@ -1,4 +1,5 @@
 /static
 /helpers
+/lambdas
 
 *.marko.js

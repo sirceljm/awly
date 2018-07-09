@@ -1,10 +1,8 @@
-const fs = require("fs");
 const path = require("path");
 require("./node_modules/marko/node-require").install();
 
 module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pageHasChanges){
     const router = require("express-promise-router")();
-    console.time("marko");
 
     router.use((req, res, next) => {
         return new Promise((resolve, reject) => {
@@ -23,7 +21,6 @@ module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pa
                         });
                     });
 
-                    console.timeEnd("marko");
                     resolve("next");
                 });
         });
