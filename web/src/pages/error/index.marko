@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Error!</title>
+
+    $!{out.global.injectCSS}
+</head>
+<body.grid-layout>
+    <h1.title>Error while compiling template!</h1>
+    <pre.error>
+        $!{out.global.error}
+    </pre>
+
+    <awly-hot-reload />
+
+    $!{out.global.injectJS}
+</body>
+</html>
+
+style {
+    .title{
+        color: red;
+        font-family: sans-serif;
+    }
+
+    .error{
+
+    }
+}
