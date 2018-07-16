@@ -1,26 +1,42 @@
 const path = require("path");
+const fs = require("fs");
+
 require("./node_modules/marko/node-require").install();
 
-module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pageHasChanges){
+module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pageHasChanges, inlineCSS){
     const router = require("express-promise-router")();
 
     router.use((req, res, next) => {
         return new Promise((resolve, reject) => {
-            console.log("Compiling: ", urlPath, localEndpoint);
-            compilePage(urlPath, localEndpoint, cwd, router, lasso, pageHasChanges)
-                .then((lassoResponse) => {
-                    router.get("/", function(req, res) {
+            compilePage(urlPath, localEndpoint, cwd, router, lasso, pageHasChanges, inlineCSS)
+                .then(lassoResponse => {
+                    router.get("/", (req, res) => {
                         res.setHeader("Content-Type", "text/html; charset=utf-8");
-                        res.marko(lassoResponse.template, {
+                        lassoResponse.template.render({
                             $global:{
                                 injectCSS: lassoResponse.css,
                                 injectJS: lassoResponse.js,
                                 request: req,
                                 response: res
                             }
+                        }).then(data => {
+                            res.send(data.out.stream.str);
+                        }).catch(err => {
+                            compilePage("/", "web/src/pages/error", __dirname, router, lasso, true, true).then(errorLassoResponse => {
+                                errorLassoResponse.template.render({
+                                    $global:{
+                                        injectCSS: errorLassoResponse.css,
+                                        injectJS: errorLassoResponse.js,
+                                        error: err.toString(),
+                                        request: req,
+                                        response: res
+                                    }
+                                }).then(data => {
+                                    res.send(data.out.stream.str);
+                                });
+                            });
                         });
                     });
-
                     resolve("next");
                 });
         });
@@ -29,7 +45,7 @@ module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pa
     return router(req, res, next);
 };
 
-function compilePage(urlPath, filePath, cwd, router, lasso, rebuildPage){
+function compilePage(urlPath, filePath, cwd, router, lasso, rebuildPage, inlineCSS){
     return new Promise((resolve, reject) => {
         console.log("RELOAD PAGE:", urlPath, "->", filePath, !rebuildPage ? " (from cache)" : "");
 
@@ -38,43 +54,47 @@ function compilePage(urlPath, filePath, cwd, router, lasso, rebuildPage){
             delete require.cache[path.resolve(cwd, filePath, "index.marko.js")];
         }
 
-        var template = require(path.resolve(cwd, filePath, "index.marko"));
+        setTimeout(() => { // should wait a bit after invalidating cache - weird but it works
+            var template = require(path.resolve(cwd, filePath, "index.marko"));
 
-        let lassoPageOptions = {
-            name: (urlPath !== "/" ? urlPath : "index"),
-            dependencies: [
-                "require-run: " + filePath,
-            ]
-        };
+            let lassoPageOptions = {
+                name: (urlPath !== "/" ? urlPath : "index"),
+                dependencies: [
+                    "require-run: " + filePath,
+                ]
+            };
 
-        // this makes lasso rebuild if there are updates to the page
-        if(rebuildPage){
-            lassoPageOptions.cacheKey = Date.now()+"";
-        }
+            // this makes lasso rebuild if there are updates to the page
+            if(rebuildPage){
+                lassoPageOptions.cacheKey = Date.now()+"";
+            }
 
-        console.time("lasso");
-        lasso.lassoPage(lassoPageOptions).then(function(lassoPageResult) {
-            let js = lassoPageResult.getBodyHtml();
-            // let cssFile = lassoPageResult.getHeadHtml();
+            console.time("lasso");
+            lasso.lassoPage(lassoPageOptions).then(function(lassoPageResult) {
+                let js = lassoPageResult.getBodyHtml();
+                let css = null;
 
-            // TODO make user choose
-            // let css = "<style>";
-            //
-            // lassoPageResult.files.forEach((file) => {
-            //     if(file.contentType == "css"){
-            //         css += fs.readFileSync(file.path, "utf8");
-            //     }
-            // });
-            //
-            // css += "</style>";
+                if (inlineCSS) {
+                    css = "<style>";
 
-            let css = lassoPageResult.getHeadHtml();
-            console.timeEnd("lasso");
-            resolve({
-                template: template,
-                js: js,
-                css: css
+                    lassoPageResult.files.forEach((file) => {
+                        if(file.contentType == "css"){
+                            css += fs.readFileSync(file.path, "utf8");
+                        }
+                    });
+
+                    css += "</style>";
+                } else {
+                    css = lassoPageResult.getHeadHtml();
+                }
+
+                console.timeEnd("lasso");
+                resolve({
+                    template: template,
+                    js: js,
+                    css: css
+                });
             });
-        });
+        }, 100);
     });
 }

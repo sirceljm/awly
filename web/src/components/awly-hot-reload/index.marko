@@ -1,0 +1,27 @@
+class {
+    onMount(){
+        var poll = () => {
+            var xhr = new XMLHttpRequest();
+            xhr.timeout = this.input.resetInterval || 60000;
+
+            xhr.onloadend = function () {
+                if(xhr.status == 200) {
+                    location.reload();
+                    poll();
+                }
+            };
+
+            xhr.ontimeout = function (e) {
+                poll();
+            };
+
+            xhr.open("GET", "/__hotReload");
+            xhr.send();
+        };
+
+        // Make sure to call it once first,
+        poll();
+    }
+}
+
+<span id:scoped></span>
