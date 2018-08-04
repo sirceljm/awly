@@ -37,9 +37,10 @@ require("./cli/version.js")(Vorpal, awlyCliConfig.version);
 // require("./cli/info.js")(Vorpal, awlyCliConfig);
 require("./cli/init.js")(Vorpal);
 
-const projectConfig = require("./lib/utils").getProjectConfig();
 
 if(insideAwlyDir()){
+    const projectConfig = require("./lib/utils").getProjectConfig();
+
     require("./cli/server/start.js")(Vorpal, projectConfig);
     require("./cli/server/cert-update.js")(Vorpal, projectConfig);
 
