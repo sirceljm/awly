@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-require("./node_modules/marko/node-require").install();
+require("./../node_modules/marko/node-require").install();
 
 module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pageHasChanges, inlineCSS){
     const router = require("express-promise-router")();
@@ -69,7 +69,6 @@ function compilePage(urlPath, filePath, cwd, router, lasso, rebuildPage, inlineC
                 lassoPageOptions.cacheKey = Date.now()+"";
             }
 
-            console.time("lasso");
             lasso.lassoPage(lassoPageOptions).then(function(lassoPageResult) {
                 let js = lassoPageResult.getBodyHtml();
                 let css = null;
@@ -88,7 +87,6 @@ function compilePage(urlPath, filePath, cwd, router, lasso, rebuildPage, inlineC
                     css = lassoPageResult.getHeadHtml();
                 }
 
-                console.timeEnd("lasso");
                 resolve({
                     template: template,
                     js: js,
