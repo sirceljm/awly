@@ -1,5 +1,5 @@
 const path = require("path");
-require("./../node_modules/marko/node-require").install();
+require("./../node_modules/@awly/marko/node-require").install();
 
 module.exports = function(req, res, next, cwd, urlPath, localEndpoint, pageHasChanges){
     const router = require("express-promise-router")();
