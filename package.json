@@ -1,6 +1,6 @@
 {
   "name": "awly",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "CLI tools for awly",
   "main": "awly.js",
   "bin": {
