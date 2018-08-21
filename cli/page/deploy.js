@@ -4,8 +4,11 @@ module.exports = function(vorpal, projectConfig){
     return vorpal
         .command("page-deploy <page>", "Deploy page to AWS" )
         .option("--no-gzip", "Do not compress lambda output")
-        .option("--edge", "Deploy a lambda@edge function")
-        .option("--region", "Deploy to a specific region - does not apply to lambda@edge")
+        .option("--no-min", "Do not minify lambda code")
+        .option("--analyze", "Analyze built lambda after completion")
+        .option("--dry-run", "Only build lambda, do not deploy")
+        //.option("--edge", "Deploy a lambda@edge function")
+        .option("--region", "Deploy to a specific region") // TODO add - does not apply to lambda@edge if labda@edge deploy is available
         .option("--lambda-name <name>", "Provide a custom name for your lambda")
         .option("--path <path>", "Provide a custom path for your lambda by default it equals lambda name")
         .alias("pd")
