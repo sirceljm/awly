@@ -16,25 +16,7 @@
 
     $!{out.global.injectJS}
 
-    <script>
-        var poll = function () {
-            var oReq = new XMLHttpRequest();
-            oReq.timeout = 60000; // time in milliseconds
-
-            oReq.onload = function (data) {
-                location.reload();
-                poll();
-            };
-
-            oReq.ontimeout = function (e) {
-                poll();
-            };
-
-            oReq.open("GET", "https://localhost:8443/__hotReload");
-            oReq.send();
-        };
-        poll();
-    </script>
+    <awly-hot-reload show-only-in-env("dev") />
 </body>
 </html>
 
