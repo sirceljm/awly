@@ -28,7 +28,7 @@
     "@awly/express-longpoll": "^1.0.0",
     "@awly/lasso": "^3.2.5",
     "@awly/lasso-sass": "^3.0.2",
-    "@awly/marko": "^4.6.4",
+    "@awly/marko": "^4.6.5",
     "app-module-path": "^2.2.0",
     "aws-sdk": "^2.247.1",
     "babel": "^6.23.0",
