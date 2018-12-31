@@ -26,24 +26,12 @@ module.exports = function(vorpal, projectConfig){
 
             if(args.options.edge){
                 require("../../lib/deploy-page-edge")(
-                    path.join( // TODO put this in lib file only pass args.page
-                        projectConfig.cwd,
-                        "src/pages",
-                        args.page,
-                        "index.marko"
-                    ),
                     projectConfig,
                     args.page,
                     args.options
                 );
             }else{
                 require("../../lib/deploy-page")(
-                    path.join(
-                        projectConfig.cwd,
-                        "src/pages",
-                        args.page,
-                        "index.marko"
-                    ),
                     projectConfig,
                     args.page,
                     args.options
