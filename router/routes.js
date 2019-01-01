@@ -14,8 +14,8 @@ module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pa
                         res.setHeader("Content-Type", "text/html; charset=utf-8");
                         lassoResponse.template.render({
                             $global:{
-                                // injectCSS: lassoResponse.css,
-                                // injectJS: lassoResponse.js,
+                                injectCSS: lassoResponse.css,
+                                injectJS: lassoResponse.js,
                                 request: req,
                                 response: res
                             }
@@ -25,8 +25,8 @@ module.exports = function(req, res, next, cwd, lasso, urlPath, localEndpoint, pa
                             compilePage("/", "web/src/pages/error", __dirname, router, lasso, true, true).then(errorLassoResponse => {
                                 errorLassoResponse.template.render({
                                     $global:{
-                                        // injectCSS: errorLassoResponse.css,
-                                        // injectJS: errorLassoResponse.js,
+                                        injectCSS: errorLassoResponse.css,
+                                        injectJS: errorLassoResponse.js,
                                         error: err.toString(),
                                         request: req,
                                         response: res
