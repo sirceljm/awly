@@ -7,7 +7,7 @@
     "awly": "awly.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap tests/*"
   },
   "repository": {
     "type": "git",
@@ -71,7 +71,15 @@
     "webpack-bundle-analyzer": "^2.13.1"
   },
   "devDependencies": {
+    "bats": "^1.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.12.0"
+    "eslint-plugin-import": "^2.12.0",
+    "md5-file": "^4.0.0",
+    "tap": "^12.1.1",
+    "tap-diff": "^0.1.1",
+    "tap-dot": "^2.0.0",
+    "tap-json": "^1.0.0",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.2"
   }
 }
