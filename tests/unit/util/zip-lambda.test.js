@@ -1,11 +1,11 @@
-const test = require("tap").test;
+const TAP = require("tap");
 const md5File = require("md5-file");
 const crypto = require("crypto");
 
 const AWS = require("aws-sdk");
-const utils = require("../../../lib/shared/awly-cli-utils")(AWS);
+const utils = require("../../../lib/shared/awly-cli")(AWS);
 
-test("zipLambda", function (t) {
+TAP.test("zipLambda", function (t) {
     t.plan(2);
 
     utils.lambda.zipLambda("tests-assets/unit/util/zip-lambda/index.js", {silent:true}).then((content) => {

@@ -1,0 +1,156 @@
+class {
+    onCreate(){
+      this.state = {
+          btnClass: "btn"
+      };
+    }
+
+    onInput(input){
+      if(input.color){
+        this.state.btnClass += " btn-" + input.color;
+      }
+
+      if(input.bold){
+        this.state.btnClass += " btn-bold";
+      }
+
+      if(input.size){
+        this.state.btnClass += " btn-" + input.size;
+      }
+    }
+
+    onMount(){
+
+    }
+
+    onButtonClick(event, el){
+        if(this.input.emitOnClick){
+            var event = new Event(this.input.emitOnClick);
+            document.dispatchEvent(event);
+        }
+
+        this.emit('click');
+    }
+}
+
+<div.btn-wrap>
+  <button class=state.btnClass on-click("onButtonClick")>
+      <include(input.text)/>
+  </button>
+</div>
+
+style.scss {
+
+  $colors: (
+    white: #FEFEFE,
+    red: #FF1654,
+    blue: #247BA0,
+    paleYellow: #F3FFBD,
+    paleGreen: #B2DBBF,
+    green: #70C1B3,
+    lightGray: #CCCCCC,
+    gray: #888888,
+    black: #000000
+  );
+
+  .btn-wrap {
+    display: flex;
+  }
+
+  .btn {
+    background: #fafafa;
+    border: 1px solid #a1a9ba;
+    border-radius: 2px;
+    color: #2e333e;
+    cursor: pointer;
+    display: flex;
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    vertical-align: middle;
+    align-content: center;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    min-width: 180px;
+    white-space: nowrap;
+    box-shadow: 0px 1px 0px #c3c3c3, inset 0px -1px 0px 1px #e0e0e0;
+    padding: 0px 10px;
+  }
+
+  .btn:focus, .btn:hover {
+    background: #ffffff;
+    text-decoration: none;
+    outline: none;
+  }
+
+  .btn.active, .btn:active {
+    background: #efefef;
+    text-decoration: none;
+    margin-top: 1px;
+    margin-bottom: -1px;
+    outline: none;
+    box-shadow: inset 0px -1px 0px 1px #e0e0e0;
+  }
+
+  @each $colorName, $colorValue in $colors {
+    $textColor: #2e333e;
+    $strokeColor: black;
+    $strokeAlpha: 0.13;
+
+    @if (lightness($colorValue) < 60) {
+      $textColor: white;
+    }
+
+    .btn-#{$colorName} {
+      background-color: $colorValue;
+      border: 1px solid rgba(black, 0.3);
+      box-shadow: 0px 1px 0px rgba($strokeColor, $strokeAlpha), inset 0px -1px 0px 1px  rgba($strokeColor, $strokeAlpha);
+      color: $textColor;
+
+      &:focus, &:hover {
+        background-color: lighten($colorValue, 5);
+      }
+
+      &:active {
+        background-color: darken($colorValue, 1);
+        box-shadow: 0px 1px 0px transparent, inset 0px -1px 0px 1px saturate($colorValue, 5);
+      }
+    }
+  }
+
+  .btn-bold {
+    font-weight: bold;
+  }
+
+  .btn-xs {
+    font-size: 0.6rem;
+    height: 20px;
+    min-width: 100px;
+  }
+
+  .btn-sm {
+    font-size: 0.8rem;
+    height: 30px;
+    min-width: 140px;
+  }
+
+  .btn-md {
+    font-size: 1rem;
+    height: 40px;
+    min-width: 180px;
+  }
+
+  .btn-lg {
+    font-size: 1.2rem;
+    height: 50px;
+    min-width: 220px;
+  }
+
+  .btn-xl {
+    font-size: 1.4rem;
+    height: 60px;
+    min-width: 260px;
+  }
+}

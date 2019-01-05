@@ -54,7 +54,9 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-lambdas
-static
+/.cache
+/lambdas
+/static
+/tests-assets/unit/util/compile-client/lambdas/static/
 
 *.marko.js
