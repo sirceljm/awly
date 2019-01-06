@@ -54,6 +54,7 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+/.env
 /.cache
 /lambdas
 /static

@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/sirceljm/awly-cli#readme",
   "dependencies": {
+    "@awly/env": "^1.0.0",
     "@awly/dynamodb-admin": "^2.1.0",
     "@awly/express-longpoll": "^1.0.0",
     "@awly/lasso": "3.2.5",

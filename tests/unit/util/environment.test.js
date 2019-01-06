@@ -1,5 +1,5 @@
 const TAP = require("tap");
 
-TAP.test("zipLambda", function (t) {
+TAP.test("environment", function (t) {
     t.plan(0);
 });
