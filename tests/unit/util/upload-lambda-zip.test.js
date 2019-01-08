@@ -19,4 +19,11 @@ TAP.test("uploadLambdaZip", function (t) {
         }).catch(err => {
             t.fail();
         });
+
+    // utils.lambda.removeLambda("awly-cli_test1", zipContents, projectConfig, {silent:true})
+    //     .then(response => {
+    //         t.pass();
+    //     }).catch(err => {
+    //         t.fail();
+    //     });
 });
