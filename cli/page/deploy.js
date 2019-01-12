@@ -1,7 +1,6 @@
 var path = require("path");
 
 module.exports = function(vorpal, projectConfig){
-
     function deployPage( args, cb ){
         const deployFn = args.options.edge ? require("../../lib/deploy-page-edge") : require("../../lib/deploy-page");
         try{
@@ -24,6 +23,7 @@ module.exports = function(vorpal, projectConfig){
         // invokes command code in module providing vorpal and arguments, supporting promise as result
         Promise.resolve( ( this, args ) ).then( projectConfig.repl ? cb : null );
     }
+
     return vorpal
         .command("page-deploy <page>", "Deploy page to AWS" )
         .option("--no-gzip", "Do not compress lambda output")
