@@ -39,7 +39,7 @@ require("./cli/init.js")(Vorpal);
 
 
 if(insideAwlyDir()){
-    const projectConfig = require("./lib/utils").getProjectConfig();
+    const projectConfig = require("./lib/shared/utils")().project.getProjectConfig();
 
     require("./cli/server/start.js")(Vorpal, projectConfig);
     require("./cli/server/cert-update.js")(Vorpal, projectConfig);
