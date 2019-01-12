@@ -1,29 +1,8 @@
-var path = require("path");
+const { awlyCliDir } = require("@awly/env");
+const path = require("path");
+const utils = require(path.resolve(awlyCliDir,"./lib/shared/utils"))();
 
 module.exports = function(vorpal, projectConfig){
-    function deployPage( args, cb ){
-        const deployFn = args.options.edge ? require("../../lib/deploy-page-edge") : require("../../lib/deploy-page");
-        try{
-            projectConfig.credentials = require(projectConfig.credentials_path);
-        } catch(err){
-            if(err.code == "MODULE_NOT_FOUND"){
-                console.log("Credentials file at " + projectConfig.credentials_path + " could not be found. Exiting.");
-                console.log("Please change the \"credentials_path\" in " + path.resolve(projectConfig.cwd, "./project-config/main.config.js"));
-                console.log("Exiting.");
-                return;
-            }
-        }
-
-        deployFn(
-            projectConfig,
-            args.page,
-            args.options
-        );
-
-        // invokes command code in module providing vorpal and arguments, supporting promise as result
-        Promise.resolve( ( this, args ) ).then( projectConfig.repl ? cb : null );
-    }
-
     return vorpal
         .command("page-deploy <page>", "Deploy page to AWS" )
         .option("--no-gzip", "Do not compress lambda output")
@@ -35,8 +14,24 @@ module.exports = function(vorpal, projectConfig){
         .option("--lambda-name <name>", "Provide a custom name for your lambda")
         .option("--path <path>", "Provide a custom path for your lambda by default it equals lambda name")
         .alias("pd")
-        .action(deployPage)
+        .action(deployPage.bind({projectConfig}))
         .on("error", function(err){
             console.log(err);
         });
 };
+
+function deployPage( args, cb, projectConfig ){
+    if(!utils.project.checkProjectCredentials(this.projectConfig)){
+        return true;
+    }
+    const deployFn = args.options.edge ? require("../../lib/deploy-page-edge") : require("../../lib/deploy-page");
+
+    deployFn(
+        this.projectConfig,
+        args.page,
+        args.options
+    );
+
+    // invokes command code in module providing vorpal and arguments, supporting promise as result
+    Promise.resolve( ( this, args ) ).then( this.projectConfig.repl ? cb : null );
+}
