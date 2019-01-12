@@ -6,7 +6,7 @@ const { awsConfig } = require("@awly/env");
 const AWS = require("aws-sdk");
 AWS.config.update(awsConfig);
 
-const utils = require("../../../lib/shared/awly-cli")(AWS);
+const utils = require("../../../lib/shared/utils")(AWS);
 const projectConfig = require("../../../lib/shared/utils")(AWS).project.getProjectConfig("./tests-assets/project-config/main.config.js");
 
 TAP.test("uploadLambdaZip", function (t) {

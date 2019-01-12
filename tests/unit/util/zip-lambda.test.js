@@ -3,7 +3,7 @@ const md5File = require("md5-file");
 const crypto = require("crypto");
 
 const AWS = require("aws-sdk");
-const utils = require("../../../lib/shared/awly-cli")(AWS);
+const utils = require("../../../lib/shared/utils")(AWS);
 
 TAP.test("zipLambda", function (t) {
     t.plan(2);

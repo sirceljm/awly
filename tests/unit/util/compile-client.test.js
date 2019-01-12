@@ -3,7 +3,7 @@ const path = require("path");
 const md5File = require("md5-file");
 
 const AWS = require("aws-sdk");
-const utils = require("../../../lib/shared/awly-cli")(AWS);
+const utils = require("../../../lib/shared/utils")(AWS);
 
 TAP.test("compileLasso", function (t) {
     utils.compile.compileClientSide(
